@@ -3,6 +3,7 @@
 #include <math.h>
 
 void drawBoard();
+int checkValid(int pos);
 void markBoard(int pos, bool playerOne);
 int checkForWinByRow();
 int checkForWinByCol();
@@ -28,6 +29,18 @@ void drawBoard()
     printf("     |     |     \n");
     printf("  %c  |  %c  |  %c  \n", board[2][0], board[2][1], board[2][2]);
     printf("-----|-----|-----\n");
+}
+
+int checkInvalid(int pos)
+{
+    int row, col;
+    row = floor( pos / 3 );
+    col = pos % 3 - 1;
+
+    if (board[row][col] == 'o' || board[row][col] == 'x') {
+        return 1;
+    }
+    return 0;
 }
 
 void markBoard(int pos, bool playerOne)
@@ -122,11 +135,18 @@ int main()
     printf("Starting with player 1.\n\n");
 
     int playerInput;
+    bool invalidInput;
     int gameStatus;
 
     for (bool player = 1;; player = !player) {
         drawBoard();
         scanf("%i", &playerInput);
+        invalidInput = checkInvalid(playerInput);
+        while (invalidInput == 1) {
+            printf("Invalid input. Try again: ");
+            scanf("%i", &playerInput);
+            invalidInput = checkInvalid(playerInput);
+        }
         markBoard(playerInput, player);
         gameStatus = checkForWin();
         if (gameStatus != 3) {
