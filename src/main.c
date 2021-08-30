@@ -34,7 +34,7 @@ void drawBoard()
 int checkInvalid(int pos)
 {
     int row, col;
-    row = floor( pos / 3 );
+    row = floor(pos / 3);
     col = pos % 3 - 1;
 
     if (board[row][col] == 'o' || board[row][col] == 'x') {
